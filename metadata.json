@@ -1,0 +1,6 @@
+{
+  "name": "SocialSphere",
+  "description": "Where Ideas Become Connections — A premium futuristic social media platform blending physical depth, liquid glassmorphism, and ambient AI intelligence.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

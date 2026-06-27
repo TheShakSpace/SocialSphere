@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Sora:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-background: #070B14;
+  --color-surface-glass: rgba(255, 255, 255, 0.04);
+  --color-surface-glass-hover: rgba(255, 255, 255, 0.08);
+  --color-primary-glow: #7C5CFF;
+  --color-secondary-glow: #00D4FF;
+  --color-accent-glow: #00FFA3;
+  --color-danger-glow: #FF5A5F;
+  --color-warning-glow: #FFC857;
+  --color-muted-text: #98A2B3;
+  --color-border-custom: rgba(255, 255, 255, 0.08);
+
+  --font-logo: "Space Grotesk", sans-serif;
+  --font-heading: "Sora", sans-serif;
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+  --font-space: "Space Grotesk", sans-serif;
+}
+
+@layer base {
+  body {
+    background-color: #070B14;
+    color: #FFFFFF;
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+  }
+
+  /* Custom Glassmorphism Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.01);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 99px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.25);
+  }
+}
+
+/* Glass Reflection Animation */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) rotate(25deg);
+  }
+  100% {
+    transform: translateX(200%) rotate(25deg);
+  }
+}
+
+.liquid-glass-reflection {
+  position: relative;
+  overflow: hidden;
+}
+
+.liquid-glass-reflection::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.03) 40%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.03) 60%,
+    transparent
+  );
+  transform: rotate(25deg);
+  animation: shimmer 12s infinite linear;
+  pointer-events: none;
+}
+
+/* Pulsing background glow blobs */
+@keyframes float-blob-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.95); }
+}
+
+@keyframes float-blob-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-40px, 40px) scale(1.2); }
+}
+
+.animate-blob-1 {
+  animation: float-blob-1 20s infinite ease-in-out;
+}
+
+.animate-blob-2 {
+  animation: float-blob-2 25s infinite ease-in-out;
+}
+
