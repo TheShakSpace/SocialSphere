@@ -5,7 +5,7 @@ interface GlassContainerProps {
   children: React.ReactNode;
   className?: string;
   id?: string;
-  glowColor?: string; // e.g. "rgba(124, 92, 255, 0.15)"
+  glowColor?: string; // e.g. "rgba(123, 97, 255, 0.15)"
   enableTilt?: boolean;
 }
 
@@ -13,7 +13,7 @@ export default function GlassContainer({
   children,
   className = "",
   id,
-  glowColor = "rgba(124, 92, 255, 0.04)",
+  glowColor = "rgba(123, 97, 255, 0.08)",
   enableTilt = true,
 }: GlassContainerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -34,9 +34,9 @@ export default function GlassContainer({
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
 
-    // Calculate rotation (-10 to 10 degrees)
-    const rotY = ((mouseX - width / 2) / (width / 2)) * 8;
-    const rotX = -((mouseY - height / 2) / (height / 2)) * 8;
+    // Calculate rotation (-6 to 6 degrees for subtle Dribbble-style tilt)
+    const rotY = ((mouseX - width / 2) / (width / 2)) * 6;
+    const rotX = -((mouseY - height / 2) / (height / 2)) * 6;
 
     // Calculate glare percentage
     const glX = (mouseX / width) * 100;
@@ -69,33 +69,25 @@ export default function GlassContainer({
       animate={{ opacity: 1, y: 0 }}
       transition={{ type: "spring", stiffness: 100, damping: 15 }}
       style={{
-        perspective: 1000,
+        perspective: 1200,
         transformStyle: "preserve-3d",
       }}
-      className={`group relative overflow-hidden rounded-[22px] border border-white/8 bg-white/4 p-6 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] backdrop-blur-xl transition-all duration-300 ${className}`}
+      className={`group relative overflow-hidden rounded-[24px] border border-border-custom bg-card p-6 shadow-main hover:shadow-hover transition-all duration-300 ${className}`}
     >
       {/* Dynamic Back Ambient Glow */}
       <div
-        className="absolute -inset-px -z-10 rounded-[22px] opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
+        className="absolute -inset-px -z-10 rounded-[24px] opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100 pointer-events-none"
         style={{
-          background: `radial-gradient(120px circle at ${glareX}% ${glareY}%, ${glowColor}, transparent)`,
+          background: `radial-gradient(140px circle at ${glareX}% ${glareY}%, ${glowColor}, transparent)`,
         }}
       />
 
-      {/* Inner Border Refraction Line */}
+      {/* Dynamic light reflex halo overlay */}
       <div
-        className="pointer-events-none absolute inset-0 -z-10 rounded-[22px] border border-white/10 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+        className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-tr from-transparent via-white/10 to-transparent transition-opacity duration-300"
         style={{
-          background: `linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 40%, transparent 60%, rgba(255,255,255,0.03) 100%)`,
-        }}
-      />
-
-      {/* Futuristic Liquid Glare Reflection Overlay */}
-      <div
-        className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-tr from-transparent via-white/5 to-transparent transition-opacity duration-300"
-        style={{
-          opacity: isHovered ? 0.3 : 0,
-          background: `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,0.12) 0%, transparent 50%)`,
+          opacity: isHovered ? 0.4 : 0,
+          background: `radial-gradient(circle at ${glareX}% ${glareY}%, rgba(123, 97, 255, 0.08) 0%, transparent 60%)`,
         }}
       />
 
@@ -103,7 +95,7 @@ export default function GlassContainer({
       <div
         style={{
           transform: isHovered
-            ? `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`
+            ? `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(12px)`
             : "rotateX(0deg) rotateY(0deg) translateZ(0px)",
           transition: isHovered ? "none" : "all 0.5s cubic-bezier(0.25, 1, 0.5, 1)",
           transformStyle: "preserve-3d",

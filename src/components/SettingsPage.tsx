@@ -15,66 +15,66 @@ export default function SettingsPage({ addToast }: SettingsPageProps) {
 
   const handleToggle = (setting: string, val: boolean, setter: (v: boolean) => void) => {
     setter(!val);
-    addToast(`${setting} configuration updated!`, "success");
+    addToast(`${setting} updated successfully!`, "success");
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 select-none">
       {/* Configuration Header Title */}
-      <div className="relative overflow-hidden rounded-[22px] border border-white/8 bg-white/4 p-5 shadow-xl backdrop-blur-xl">
-        <div className="absolute inset-0 bg-gradient-to-tr from-[#7C5CFF]/5 via-transparent to-transparent pointer-events-none" />
+      <div className="relative overflow-hidden rounded-[24px] border border-border-custom bg-card p-5 shadow-main transition-colors duration-300">
+        <div className="absolute inset-0 bg-gradient-to-tr from-[#7B61FF]/5 via-transparent to-transparent pointer-events-none" />
         <div className="flex items-center gap-2.5">
-          <Settings className="h-5 w-5 text-[#00D4FF]" />
-          <h2 className="font-heading text-lg font-bold text-white">System Configurations</h2>
+          <Settings className="h-5 w-5 text-accent-blue" />
+          <h2 className="font-heading text-base font-bold text-text-custom">Settings</h2>
         </div>
       </div>
 
-      {/* Settings Sections - Glass Cards */}
+      {/* Settings Sections */}
       <div className="flex flex-col gap-4">
         {/* Visual Engine Config */}
-        <div className="rounded-[22px] border border-white/8 bg-white/4 p-5 shadow-lg backdrop-blur-md">
-          <div className="flex items-center gap-2 mb-4 text-[#7C5CFF]">
+        <div className="rounded-[24px] border border-border-custom bg-card p-5 shadow-main transition-colors duration-300">
+          <div className="flex items-center gap-2 mb-4 text-[#7B61FF]">
             <Cpu className="h-4.5 w-4.5" />
-            <h3 className="font-space text-xs font-bold uppercase tracking-wider">Spatial Rendering Engine</h3>
+            <h3 className="font-heading text-xs font-bold uppercase tracking-wider">Visual Preferences</h3>
           </div>
 
           <div className="flex flex-col gap-4">
             {/* Ambient Glow Blob */}
-            <div className="flex items-center justify-between p-3 rounded-xl hover:bg-white/[0.01] transition-all">
-              <div>
-                <span className="font-heading text-xs font-semibold text-white block">Ambient Hologram Blob</span>
-                <span className="font-sans text-[10px] text-[#98A2B3]">Render large, animated, floating blur spheres in viewport canvas background.</span>
+            <div className="flex items-center justify-between p-3.5 rounded-xl hover:bg-black/[0.01] dark:hover:bg-white/[0.01] transition-all">
+              <div className="pr-4">
+                <span className="font-heading text-xs font-bold text-text-custom block">Animated Background Blobs</span>
+                <span className="font-sans text-[10px] text-muted-custom mt-1 block font-semibold leading-relaxed">Render smooth, drifting background color blur spheres in the canvas.</span>
               </div>
               <button
-                onClick={() => handleToggle("Ambient Hologram Blob", ambientGlow, setAmbientGlow)}
-                className={`relative w-11 h-6 rounded-full transition-colors duration-300 border focus:outline-none ${
-                  ambientGlow ? "bg-[#7C5CFF] border-[#7C5CFF]" : "bg-black/40 border-white/10"
+                onClick={() => handleToggle("Background blobs setting", ambientGlow, setAmbientGlow)}
+                className={`relative w-11 h-6 shrink-0 rounded-full transition-colors duration-300 border focus:outline-none cursor-pointer ${
+                  ambientGlow ? "bg-primary-custom border-primary-custom" : "bg-black/10 dark:bg-white/10 border-border-custom"
                 }`}
               >
                 <motion.div
                   animate={{ x: ambientGlow ? 20 : 2 }}
                   transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                  className="w-4 h-4 rounded-full bg-white shadow-md absolute top-0.5"
+                  className="w-4.5 h-4.5 rounded-full bg-white shadow-md absolute top-0.5"
                 />
               </button>
             </div>
 
             {/* Interactive Glass Tilt */}
-            <div className="flex items-center justify-between p-3 rounded-xl hover:bg-white/[0.01] transition-all">
-              <div>
-                <span className="font-heading text-xs font-semibold text-white block">3D Glass Tilt Perspective</span>
-                <span className="font-sans text-[10px] text-[#98A2B3]">Apply mouse movement parallax and 3D rotation transforms on post cards.</span>
+            <div className="flex items-center justify-between p-3.5 rounded-xl hover:bg-black/[0.01] dark:hover:bg-white/[0.01] transition-all">
+              <div className="pr-4">
+                <span className="font-heading text-xs font-bold text-text-custom block">3D Perspective Card Tilt</span>
+                <span className="font-sans text-[10px] text-muted-custom mt-1 block font-semibold leading-relaxed">Apply a premium cursor-following tilt rotation transform to feed cards.</span>
               </div>
               <button
-                onClick={() => handleToggle("3D Glass Tilt", interactiveGlass, setInteractiveGlass)}
-                className={`relative w-11 h-6 rounded-full transition-colors duration-300 border focus:outline-none ${
-                  interactiveGlass ? "bg-[#7C5CFF] border-[#7C5CFF]" : "bg-black/40 border-white/10"
+                onClick={() => handleToggle("Perspective tilt setting", interactiveGlass, setInteractiveGlass)}
+                className={`relative w-11 h-6 shrink-0 rounded-full transition-colors duration-300 border focus:outline-none cursor-pointer ${
+                  interactiveGlass ? "bg-primary-custom border-primary-custom" : "bg-black/10 dark:bg-white/10 border-border-custom"
                 }`}
               >
                 <motion.div
                   animate={{ x: interactiveGlass ? 20 : 2 }}
                   transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                  className="w-4 h-4 rounded-full bg-white shadow-md absolute top-0.5"
+                  className="w-4.5 h-4.5 rounded-full bg-white shadow-md absolute top-0.5"
                 />
               </button>
             </div>
@@ -82,29 +82,29 @@ export default function SettingsPage({ addToast }: SettingsPageProps) {
         </div>
 
         {/* AI & Intelligence Config */}
-        <div className="rounded-[22px] border border-white/8 bg-white/4 p-5 shadow-lg backdrop-blur-md">
-          <div className="flex items-center gap-2 mb-4 text-[#00FFA3]">
+        <div className="rounded-[24px] border border-border-custom bg-card p-5 shadow-main transition-colors duration-300">
+          <div className="flex items-center gap-2 mb-4 text-[#34D399]">
             <Sparkles className="h-4.5 w-4.5" />
-            <h3 className="font-space text-xs font-bold uppercase tracking-wider">AI Intelligence Nodes</h3>
+            <h3 className="font-heading text-xs font-bold uppercase tracking-wider">AI Features</h3>
           </div>
 
           <div className="flex flex-col gap-4">
             {/* Neural Enhance Toggle */}
-            <div className="flex items-center justify-between p-3 rounded-xl hover:bg-white/[0.01] transition-all">
-              <div>
-                <span className="font-heading text-xs font-semibold text-white block">Continuous Mood Sync</span>
-                <span className="font-sans text-[10px] text-[#98A2B3]">Feed content into server-side Gemini 3.5 models to classify visual emotional signals.</span>
+            <div className="flex items-center justify-between p-3.5 rounded-xl hover:bg-black/[0.01] dark:hover:bg-white/[0.01] transition-all">
+              <div className="pr-4">
+                <span className="font-heading text-xs font-bold text-text-custom block">AI Mood Synchronization</span>
+                <span className="font-sans text-[10px] text-muted-custom mt-1 block font-semibold leading-relaxed">Synthesize active inputs into our server-side models to generate creative emotion tags.</span>
               </div>
               <button
-                onClick={() => handleToggle("Continuous Mood Sync", neuralEnhance, setNeuralEnhance)}
-                className={`relative w-11 h-6 rounded-full transition-colors duration-300 border focus:outline-none ${
-                  neuralEnhance ? "bg-[#00FFA3] border-[#00FFA3]" : "bg-black/40 border-white/10"
+                onClick={() => handleToggle("AI mood synchronizer setting", neuralEnhance, setNeuralEnhance)}
+                className={`relative w-11 h-6 shrink-0 rounded-full transition-colors duration-300 border focus:outline-none cursor-pointer ${
+                  neuralEnhance ? "bg-[#34D399] border-[#34D399]" : "bg-black/10 dark:bg-white/10 border-border-custom"
                 }`}
               >
                 <motion.div
                   animate={{ x: neuralEnhance ? 20 : 2 }}
                   transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                  className="w-4 h-4 rounded-full bg-white shadow-md absolute top-0.5"
+                  className="w-4.5 h-4.5 rounded-full bg-white shadow-md absolute top-0.5"
                 />
               </button>
             </div>
@@ -112,45 +112,45 @@ export default function SettingsPage({ addToast }: SettingsPageProps) {
         </div>
 
         {/* Security & Access Core */}
-        <div className="rounded-[22px] border border-white/8 bg-white/4 p-5 shadow-lg backdrop-blur-md">
-          <div className="flex items-center gap-2 mb-4 text-[#00D4FF]">
+        <div className="rounded-[24px] border border-border-custom bg-card p-5 shadow-main transition-colors duration-300">
+          <div className="flex items-center gap-2 mb-4 text-[#38BDF8]">
             <Shield className="h-4.5 w-4.5" />
-            <h3 className="font-space text-xs font-bold uppercase tracking-wider">Privacy & Neural Shields</h3>
+            <h3 className="font-heading text-xs font-bold uppercase tracking-wider">Privacy & Safety</h3>
           </div>
 
           <div className="flex flex-col gap-4">
             {/* Private Mode Toggle */}
-            <div className="flex items-center justify-between p-3 rounded-xl hover:bg-white/[0.01] transition-all">
-              <div>
-                <span className="font-heading text-xs font-semibold text-white block">Incognito Transmission</span>
-                <span className="font-sans text-[10px] text-[#98A2B3]">Hide profile stats and creator level indices from public explore queries.</span>
+            <div className="flex items-center justify-between p-3.5 rounded-xl hover:bg-black/[0.01] dark:hover:bg-white/[0.01] transition-all">
+              <div className="pr-4">
+                <span className="font-heading text-xs font-bold text-text-custom block">Private Account Mode</span>
+                <span className="font-sans text-[10px] text-muted-custom mt-1 block font-semibold leading-relaxed">Conceal follower indices and level indicators from search directories.</span>
               </div>
               <button
-                onClick={() => handleToggle("Incognito Transmission", privateMode, setPrivateMode)}
-                className={`relative w-11 h-6 rounded-full transition-colors duration-300 border focus:outline-none ${
-                  privateMode ? "bg-[#00D4FF] border-[#00D4FF]" : "bg-black/40 border-white/10"
+                onClick={() => handleToggle("Privacy account mode", privateMode, setPrivateMode)}
+                className={`relative w-11 h-6 shrink-0 rounded-full transition-colors duration-300 border focus:outline-none cursor-pointer ${
+                  privateMode ? "bg-[#38BDF8] border-[#38BDF8]" : "bg-black/10 dark:bg-white/10 border-border-custom"
                 }`}
               >
                 <motion.div
                   animate={{ x: privateMode ? 20 : 2 }}
                   transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                  className="w-4 h-4 rounded-full bg-white shadow-md absolute top-0.5"
+                  className="w-4.5 h-4.5 rounded-full bg-white shadow-md absolute top-0.5"
                 />
               </button>
             </div>
           </div>
         </div>
 
-        {/* Static Developer Note */}
-        <div className="rounded-[22px] border border-white/6 bg-white/[0.01] p-4 text-center">
-          <span className="block font-mono text-[8px] text-[#98A2B3] uppercase tracking-widest mb-1.5">HARDWARE DIAGNOSTIC</span>
-          <div className="flex items-center justify-center gap-3 text-xs text-[#00FFA3]">
-            <span className="flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#00FFA3] animate-pulse" />
-              <span>Server-side API Connected</span>
+        {/* Static Diagnostic Note */}
+        <div className="rounded-[24px] border border-border-custom bg-black/[0.01] dark:bg-white/[0.01] p-4.5 text-center transition-colors">
+          <span className="block font-heading text-[9px] text-muted-custom font-bold uppercase tracking-widest mb-1.5">SYSTEM HEALTH</span>
+          <div className="flex items-center justify-center gap-3 text-[11px] font-semibold text-[#34D399]">
+            <span className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-[#34D399] animate-pulse" />
+              <span>API Gateway Synchronized</span>
             </span>
             <span>•</span>
-            <span>Client Render: 60 FPS</span>
+            <span>GPU Viewport: 60 FPS</span>
           </div>
         </div>
       </div>

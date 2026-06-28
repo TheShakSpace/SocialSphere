@@ -12,6 +12,9 @@ import {
   Terminal,
   Layers,
   Sparkles,
+  MessageSquare,
+  Users,
+  Bookmark
 } from "lucide-react";
 import { UserProfile } from "../types";
 
@@ -35,29 +38,29 @@ export default function Sidebar({
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const navItems = [
-    { id: "feed", label: "Home Base", icon: Home },
-    { id: "explore", label: "Explore", icon: Compass },
+    { id: "feed", label: "Home Feed", icon: Home },
+    { id: "explore", label: "Explore Grid", icon: Compass },
+    { id: "messages", label: "Messages", icon: MessageSquare },
+    { id: "communities", label: "Communities", icon: Users },
+    { id: "bookmarks", label: "Bookmarks", icon: Bookmark },
     {
       id: "notifications",
-      label: "Interactions",
+      label: "Notifications",
       icon: Bell,
       badge: unreadCount > 0 ? unreadCount : undefined,
     },
     { id: "profile", label: "My Profile", icon: User },
-    { id: "settings", label: "Configurations", icon: Settings },
+    { id: "settings", label: "Preferences", icon: Settings },
   ];
 
   return (
     <motion.div
-      animate={{ width: isCollapsed ? 80 : 280 }}
-      transition={{ type: "spring", stiffness: 150, damping: 20 }}
-      className="sticky top-6 flex h-[calc(100vh-48px)] flex-col gap-6"
+      animate={{ width: isCollapsed ? 82 : 280 }}
+      transition={{ type: "spring", stiffness: 180, damping: 22 }}
+      className="sticky top-24 flex h-[calc(100vh-110px)] flex-col gap-6 select-none"
     >
-      {/* Outer Sidebar Glass Panel */}
-      <div className="relative flex h-full flex-col justify-between rounded-[22px] border border-white/8 bg-white/4 p-4 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] backdrop-blur-xl">
-        {/* Reflection Highlight line */}
-        <div className="pointer-events-none absolute inset-0 rounded-[22px] border border-white/5 bg-gradient-to-tr from-transparent via-white/[0.02] to-transparent" />
-
+      {/* Outer Sidebar Card */}
+      <div className="relative flex h-full flex-col justify-between rounded-[24px] border border-border-custom bg-card p-4.5 shadow-main transition-colors duration-300">
         <div>
           {/* Logo Section */}
           <div className="relative mb-6 flex h-14 items-center justify-between px-2">
@@ -67,19 +70,19 @@ export default function Sidebar({
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -10 }}
-                  className="flex items-center gap-2.5"
+                  className="flex items-center gap-3"
                 >
-                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-[#7C5CFF] to-[#00D4FF] p-0.5 shadow-lg shadow-[#7C5CFF]/20">
-                    <div className="flex h-full w-full items-center justify-center rounded-[10px] bg-[#070B14]">
-                      <Layers className="h-4.5 w-4.5 text-[#00FFA3]" />
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-[#7B61FF] to-[#A855F7] p-0.5 shadow-lg shadow-[#7B61FF]/15">
+                    <div className="flex h-full w-full items-center justify-center rounded-[10px] bg-card">
+                      <Layers className="h-4.5 w-4.5 text-primary-custom" />
                     </div>
                   </div>
                   <div className="flex flex-col">
-                    <span className="font-logo text-lg font-bold tracking-wider text-white">
-                      SOCIAL<span className="text-[#00D4FF]">SPHERE</span>
+                    <span className="font-heading text-base font-bold tracking-tight text-text-custom">
+                      Social<span className="text-primary-custom">Sphere</span>
                     </span>
-                    <span className="font-mono text-[9px] tracking-widest text-[#98A2B3]">
-                      VERSION 3.1
+                    <span className="font-space text-[9px] font-bold tracking-widest text-muted-custom uppercase">
+                      V3.1 Core
                     </span>
                   </div>
                 </motion.div>
@@ -87,9 +90,9 @@ export default function Sidebar({
             </AnimatePresence>
 
             {isCollapsed && (
-              <div className="mx-auto flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-[#7C5CFF] to-[#00D4FF] p-0.5 shadow-lg shadow-[#7C5CFF]/20">
-                <div className="flex h-full w-full items-center justify-center rounded-[10px] bg-[#070B14]">
-                  <Layers className="h-4.5 w-4.5 text-[#00FFA3]" />
+              <div className="mx-auto flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-[#7B61FF] to-[#A855F7] p-0.5 shadow-lg shadow-[#7B61FF]/15">
+                <div className="flex h-full w-full items-center justify-center rounded-[10px] bg-card">
+                  <Layers className="h-4.5 w-4.5 text-primary-custom" />
                 </div>
               </div>
             )}
@@ -97,7 +100,7 @@ export default function Sidebar({
             {/* Collapse Trigger Button */}
             <button
               onClick={() => setIsCollapsed(!isCollapsed)}
-              className="absolute -right-7 top-4 flex h-6 w-6 items-center justify-center rounded-full border border-white/10 bg-[#070B14] text-white hover:bg-white/5 hover:text-[#00D4FF] transition-colors"
+              className="absolute -right-7.5 top-4 flex h-6.5 w-6.5 items-center justify-center rounded-full border border-border-custom bg-card text-text-custom shadow-sm hover:bg-primary-custom hover:text-white hover:scale-105 transition-all cursor-pointer z-20"
             >
               {isCollapsed ? (
                 <ChevronRight className="h-3.5 w-3.5" />
@@ -107,17 +110,17 @@ export default function Sidebar({
             </button>
           </div>
 
-          {/* Command Palette Instant Trigger - Nothing OS styling */}
-          <div className="px-2 mb-6">
+          {/* Command Palette Instant Trigger */}
+          <div className="px-1.5 mb-5">
             <button
               onClick={openCommandPalette}
-              className="flex w-full items-center gap-3 rounded-xl border border-white/6 bg-white/[0.02] py-2 px-3 hover:bg-white/5 transition-all text-left text-[#98A2B3]"
+              className="flex w-full items-center gap-3 rounded-xl border border-border-custom bg-black/[0.02] dark:bg-white/[0.02] py-2.5 px-3.5 hover:bg-black/[0.04] dark:hover:bg-white/[0.04] transition-all text-left text-muted-custom"
             >
-              <Terminal className="h-4 w-4 text-[#7C5CFF]" />
+              <Terminal className="h-4 w-4 text-primary-custom shrink-0" />
               {!isCollapsed && (
-                <div className="flex w-full items-center justify-between text-xs font-mono">
+                <div className="flex w-full items-center justify-between text-xs font-sans">
                   <span>Command bar</span>
-                  <span className="rounded bg-white/10 px-1.5 py-0.5 text-[9px] text-white">
+                  <span className="rounded bg-black/5 dark:bg-white/10 px-1.5 py-0.5 text-[9px] text-text-custom font-mono">
                     ⌘K
                   </span>
                 </div>
@@ -126,7 +129,7 @@ export default function Sidebar({
           </div>
 
           {/* Navigation Links */}
-          <nav className="flex flex-col gap-1 px-1">
+          <nav className="flex flex-col gap-1.5 px-1">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = activeTab === item.id;
@@ -135,19 +138,19 @@ export default function Sidebar({
                 <button
                   key={item.id}
                   onClick={() => setActiveTab(item.id)}
-                  className="group relative flex h-11 w-full items-center rounded-xl px-3 transition-all duration-300"
+                  className="group relative flex h-11.5 w-full items-center rounded-xl px-3 transition-all duration-300 cursor-pointer"
                 >
                   {/* Glowing Background pill for Active state */}
                   {isActive && (
                     <motion.div
                       layoutId="activeNavBackground"
-                      className="absolute inset-0 rounded-xl bg-gradient-to-r from-white/[0.04] to-white/[0.01] border-l-2 border-[#7C5CFF]"
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      className="absolute inset-0 rounded-xl bg-primary-custom/10 border-l-4 border-primary-custom"
+                      transition={{ type: "spring", stiffness: 350, damping: 25 }}
                     />
                   )}
 
                   {/* Standard Hover effect */}
-                  <div className="absolute inset-0 rounded-xl bg-white/0 opacity-0 group-hover:bg-white/[0.02] group-hover:opacity-100 transition-all duration-200" />
+                  <div className="absolute inset-0 rounded-xl bg-black/0 dark:bg-white/0 opacity-0 group-hover:bg-black/[0.02] dark:group-hover:bg-white/[0.02] group-hover:opacity-100 transition-all duration-200" />
 
                   {/* Nav Item Content */}
                   <div className="relative z-10 flex w-full items-center justify-between">
@@ -155,14 +158,14 @@ export default function Sidebar({
                       <Icon
                         className={`h-5 w-5 transition-transform duration-300 group-hover:scale-105 ${
                           isActive
-                            ? "text-[#7C5CFF]"
-                            : "text-[#98A2B3] group-hover:text-white"
+                            ? "text-primary-custom"
+                            : "text-muted-custom group-hover:text-text-custom"
                         }`}
                       />
                       {!isCollapsed && (
                         <span
-                          className={`font-heading text-sm font-medium transition-colors duration-200 ${
-                            isActive ? "text-white" : "text-[#98A2B3] group-hover:text-white"
+                          className={`font-heading text-[13px] font-semibold transition-colors duration-200 ${
+                            isActive ? "text-primary-custom font-bold" : "text-muted-custom group-hover:text-text-custom"
                           }`}
                         >
                           {item.label}
@@ -172,7 +175,7 @@ export default function Sidebar({
 
                     {/* Notification badges */}
                     {item.badge !== undefined && (
-                      <span className="flex h-5 items-center justify-center rounded-full bg-[#FF5A5F] px-1.5 font-mono text-[10px] font-bold text-white shadow-lg shadow-[#FF5A5F]/20">
+                      <span className="flex h-5 items-center justify-center rounded-full bg-[#FF6EC7] px-1.5 font-sans text-[10px] font-bold text-white shadow-md">
                         {item.badge}
                       </span>
                     )}
@@ -184,33 +187,34 @@ export default function Sidebar({
         </div>
 
         {/* Profile Card & Action Area */}
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3.5">
           <AnimatePresence mode="wait">
             {!isCollapsed ? (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 10 }}
-                className="flex items-center gap-3 rounded-xl border border-white/6 bg-white/[0.01] p-2.5"
+                onClick={() => setActiveTab("profile")}
+                className="flex items-center gap-3 rounded-2xl border border-border-custom bg-black/[0.02] dark:bg-white/[0.02] p-3 hover:bg-black/[0.04] dark:hover:bg-white/[0.04] transition-all cursor-pointer"
               >
-                <div className="relative">
+                <div className="relative shrink-0">
                   <img
                     src={user.avatar}
                     alt={user.name}
-                    className="h-10 w-10 rounded-xl object-cover border border-[#7C5CFF]/30"
+                    className="h-10 w-10 rounded-xl object-cover border-2 border-primary-custom/20"
                   />
-                  <div className="absolute -bottom-1 -right-1 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-[#7C5CFF] font-space text-[9px] font-bold text-white shadow-md border border-[#070B14]">
+                  <div className="absolute -bottom-1 -right-1 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-gradient-to-tr from-primary-custom to-secondary-custom font-space text-[9px] font-bold text-white shadow-md border-2 border-card">
                     {user.level}
                   </div>
                 </div>
                 <div className="flex flex-col overflow-hidden">
                   <div className="flex items-center gap-1">
-                    <span className="font-heading text-xs font-semibold text-white truncate">
+                    <span className="font-heading text-xs font-bold text-text-custom truncate">
                       {user.name}
                     </span>
-                    <Sparkles className="h-3 w-3 text-[#00FFA3]" />
+                    <Sparkles className="h-3 w-3 text-[#34D399] shrink-0" />
                   </div>
-                  <span className="font-mono text-[10px] text-[#98A2B3] truncate">
+                  <span className="font-sans text-[10px] text-muted-custom truncate">
                     @{user.handle}
                   </span>
                 </div>
@@ -220,24 +224,24 @@ export default function Sidebar({
                 <img
                   src={user.avatar}
                   alt={user.name}
-                  className="h-10 w-10 rounded-xl object-cover border border-[#7C5CFF]/30 hover:scale-105 transition-transform cursor-pointer"
+                  className="h-10 w-10 rounded-xl object-cover border-2 border-primary-custom/20 hover:scale-105 transition-transform cursor-pointer shadow-sm"
                   onClick={() => setActiveTab("profile")}
                 />
-                <div className="absolute -bottom-1 -right-1 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-[#7C5CFF] font-space text-[9px] font-bold text-white shadow-md border border-[#070B14]">
+                <div className="absolute -bottom-1 -right-1 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-primary-custom font-space text-[9px] font-bold text-white shadow-md border-2 border-card">
                   {user.level}
                 </div>
               </div>
             )}
           </AnimatePresence>
 
-          {/* Action Links */}
+          {/* Logout Action button */}
           <div className="flex flex-col gap-1">
             <button
               onClick={onLogout}
-              className="group relative flex h-10 w-full items-center rounded-xl px-3 text-[#98A2B3] hover:bg-[#FF5A5F]/10 hover:text-[#FF5A5F] transition-all"
+              className="group relative flex h-10 w-full items-center rounded-xl px-3 text-muted-custom hover:bg-red-500/10 hover:text-red-500 transition-all cursor-pointer"
             >
               <LogOut className="h-5 w-5 mr-3 transition-transform group-hover:translate-x-0.5" />
-              {!isCollapsed && <span className="font-heading text-xs font-medium">Disconnect</span>}
+              {!isCollapsed && <span className="font-heading text-xs font-semibold">Disconnect</span>}
             </button>
           </div>
         </div>

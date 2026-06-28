@@ -18,33 +18,33 @@ export default function NotificationsDrawer({
   const getIcon = (type: NotificationType) => {
     switch (type) {
       case NotificationType.LIKE:
-        return <Heart className="h-4.5 w-4.5 text-[#FF5A5F]" />;
+        return <Heart className="h-3.5 w-3.5 text-red-500 fill-red-500" />;
       case NotificationType.COMMENT:
-        return <MessageSquare className="h-4.5 w-4.5 text-[#00D4FF]" />;
+        return <MessageSquare className="h-3.5 w-3.5 text-accent-blue" />;
       case NotificationType.FOLLOW:
-        return <UserPlus className="h-4.5 w-4.5 text-[#00FFA3]" />;
+        return <UserPlus className="h-3.5 w-3.5 text-[#34D399]" />;
       default:
-        return <Award className="h-4.5 w-4.5 text-[#7C5CFF]" />;
+        return <Award className="h-3.5 w-3.5 text-primary-custom" />;
     }
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 select-none">
       {/* Title Panel */}
-      <div className="relative overflow-hidden rounded-[22px] border border-white/8 bg-white/4 p-5 shadow-xl backdrop-blur-xl">
-        <div className="absolute inset-0 bg-gradient-to-tr from-[#7C5CFF]/5 via-transparent to-transparent pointer-events-none" />
+      <div className="relative overflow-hidden rounded-[24px] border border-border-custom bg-card p-5 shadow-main transition-colors duration-300">
+        <div className="absolute inset-0 bg-gradient-to-tr from-[#7B61FF]/5 via-transparent to-transparent pointer-events-none" />
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <Bell className="h-5 w-5 text-[#7C5CFF]" />
-            <h2 className="font-heading text-lg font-bold text-white">Neural Interactions</h2>
+            <Bell className="h-5 w-5 text-primary-custom" />
+            <h2 className="font-heading text-base font-bold text-text-custom">Notifications</h2>
           </div>
           {notifications.some((n) => !n.isRead) && (
             <button
               onClick={onMarkAllRead}
-              className="flex items-center gap-1 font-mono text-[10px] text-[#00FFA3] hover:underline"
+              className="flex items-center gap-1.5 font-sans text-xs text-[#34D399] font-bold hover:underline cursor-pointer"
             >
-              <CheckCircle className="h-3.5 w-3.5" />
-              <span>Mark all synchronized</span>
+              <CheckCircle className="h-4 w-4" />
+              <span>Mark all as read</span>
             </button>
           )}
         </div>
@@ -53,23 +53,23 @@ export default function NotificationsDrawer({
       {/* Notifications list */}
       <div className="flex flex-col gap-3">
         {notifications.length === 0 ? (
-          <div className="rounded-[22px] border border-white/6 bg-white/[0.01] p-12 text-center">
-            <p className="font-sans text-xs text-[#98A2B3]">No neural activity logged recently.</p>
+          <div className="rounded-[24px] border border-border-custom bg-card p-12 text-center shadow-sm">
+            <p className="font-sans text-xs text-muted-custom font-semibold">All quiet here! No new notifications.</p>
           </div>
         ) : (
           notifications.map((notif) => (
             <div
               key={notif.id}
               onClick={() => onMarkRead(notif.id)}
-              className={`group relative overflow-hidden rounded-2xl border p-4 transition-all duration-300 flex gap-4 cursor-pointer ${
+              className={`group relative overflow-hidden rounded-2xl border p-4.5 transition-all duration-300 flex gap-4 cursor-pointer ${
                 notif.isRead 
-                  ? "bg-white/[0.01] border-white/4 hover:bg-white/[0.02]" 
-                  : "bg-gradient-to-r from-white/[0.05] to-white/[0.01] border-white/10 hover:from-white/[0.07]"
+                  ? "bg-card border-border-custom hover:bg-black/[0.01] dark:hover:bg-white/[0.01]" 
+                  : "bg-primary-custom/[0.03] dark:bg-primary-custom/[0.05] border-primary-custom/20 hover:bg-primary-custom/[0.05]"
               }`}
             >
               {/* Unread indicator dot */}
               {!notif.isRead && (
-                <div className="absolute top-4 right-4 h-2 w-2 rounded-full bg-[#7C5CFF] shadow-lg shadow-[#7C5CFF]/50" />
+                <div className="absolute top-5 right-5 h-2 w-2 rounded-full bg-primary-custom shadow-md shadow-primary-custom/40" />
               )}
 
               {/* Avatar / Icon layout */}
@@ -78,30 +78,30 @@ export default function NotificationsDrawer({
                   <img 
                     src={notif.actor.avatar} 
                     alt="" 
-                    className="h-10 w-10 rounded-xl object-cover border border-white/5"
+                    className="h-10 w-10 rounded-full object-cover border border-border-custom"
                   />
                 ) : (
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-[#7C5CFF] to-[#00D4FF] p-0.5">
-                    <div className="flex h-full w-full items-center justify-center rounded-[9px] bg-[#070B14]">
-                      <Bell className="h-4 w-4 text-[#00FFA3]" />
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-tr from-[#7B61FF] to-[#A855F7] p-0.5">
+                    <div className="flex h-full w-full items-center justify-center rounded-full bg-card">
+                      <Bell className="h-4.5 w-4.5 text-primary-custom" />
                     </div>
                   </div>
                 )}
                 {/* Micro Category Icon Pill */}
-                <div className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#070B14] border border-white/10 shadow-sm">
+                <div className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-card border border-border-custom shadow-sm">
                   {getIcon(notif.type)}
                 </div>
               </div>
 
               {/* Text context details */}
-              <div className="flex-1">
-                <span className="font-heading text-xs font-semibold text-white block pr-4">
+              <div className="flex-1 overflow-hidden">
+                <span className="font-heading text-xs font-bold text-text-custom block pr-4 leading-tight">
                   {notif.title}
                 </span>
-                <p className="font-sans text-xs text-[#98A2B3] mt-1">
+                <p className="font-sans text-xs text-muted-custom mt-1 font-semibold leading-relaxed">
                   {notif.description}
                 </p>
-                <span className="font-mono text-[9px] text-[#98A2B3]/60 block mt-2">
+                <span className="font-sans text-[10px] text-muted-custom/60 font-bold block mt-2">
                   {notif.timestamp}
                 </span>
               </div>
