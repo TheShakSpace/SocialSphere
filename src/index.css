@@ -1,17 +1,59 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Sora:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
+@variant dark (&:where(.dark, .dark *));
+
+:root {
+  --bg-color: #F5F7FB;
+  --card-color: #FFFFFF;
+  --primary-color: #7B61FF;
+  --secondary-color: #A855F7;
+  --accent-blue: #38BDF8;
+  --accent-pink: #FF6EC7;
+  --accent-orange: #FF9F43;
+  --success-color: #34D399;
+  --text-color: #1E293B;
+  --muted-text: #64748B;
+  --border-color: #E2E8F0;
+  --shadow-main: 0 12px 30px -10px rgba(123, 97, 255, 0.05), 0 2px 12px -2px rgba(0, 0, 0, 0.02);
+  --shadow-hover: 0 20px 40px -15px rgba(123, 97, 255, 0.12), 0 4px 20px -3px rgba(123, 97, 255, 0.04);
+  --glow-opacity: 0.1;
+  --border-opacity: 0.06;
+}
+
+:root.dark {
+  --bg-color: #0A0F1E;
+  --card-color: #131A2E;
+  --primary-color: #907CFF;
+  --secondary-color: #B87CF7;
+  --accent-blue: #38BDF8;
+  --accent-pink: #FF6EC7;
+  --accent-orange: #FF9F43;
+  --success-color: #34D399;
+  --text-color: #F8FAFC;
+  --muted-text: #94A3B8;
+  --border-color: #1E293B;
+  --shadow-main: 0 10px 30px -12px rgba(0, 0, 0, 0.6);
+  --shadow-hover: 0 20px 40px -15px rgba(0, 0, 0, 0.8);
+  --glow-opacity: 0.35;
+  --border-opacity: 0.15;
+}
+
 @theme {
-  --color-background: #070B14;
-  --color-surface-glass: rgba(255, 255, 255, 0.04);
-  --color-surface-glass-hover: rgba(255, 255, 255, 0.08);
-  --color-primary-glow: #7C5CFF;
-  --color-secondary-glow: #00D4FF;
-  --color-accent-glow: #00FFA3;
-  --color-danger-glow: #FF5A5F;
-  --color-warning-glow: #FFC857;
-  --color-muted-text: #98A2B3;
-  --color-border-custom: rgba(255, 255, 255, 0.08);
+  --color-background: var(--bg-color);
+  --color-card: var(--card-color);
+  --color-primary-custom: var(--primary-color);
+  --color-secondary-custom: var(--secondary-color);
+  --color-accent-blue: var(--accent-blue);
+  --color-accent-pink: var(--accent-pink);
+  --color-accent-orange: var(--accent-orange);
+  --color-success-custom: var(--success-color);
+  --color-text-custom: var(--text-color);
+  --color-muted-custom: var(--muted-text);
+  --color-border-custom: var(--border-color);
+
+  --shadow-main: var(--shadow-main);
+  --shadow-hover: var(--shadow-hover);
 
   --font-logo: "Space Grotesk", sans-serif;
   --font-heading: "Sora", sans-serif;
@@ -21,81 +63,88 @@
 
 @layer base {
   body {
-    background-color: #070B14;
-    color: #FFFFFF;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     font-family: var(--font-sans);
     overflow-x: hidden;
+    transition: background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   }
 
-  /* Custom Glassmorphism Scrollbar */
+  /* Custom Smooth Friendly Scrollbar */
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
   }
   ::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.01);
+    background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1);
+    background: #E2E8F0;
     border-radius: 99px;
   }
+  .dark ::-webkit-scrollbar-thumb {
+    background: #1E293B;
+  }
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.25);
+    background: #CBD5E1;
+  }
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: #334155;
   }
 }
 
-/* Glass Reflection Animation */
-@keyframes shimmer {
-  0% {
-    transform: translateX(-100%) rotate(25deg);
-  }
-  100% {
-    transform: translateX(200%) rotate(25deg);
-  }
-}
-
-.liquid-glass-reflection {
-  position: relative;
-  overflow: hidden;
-}
-
-.liquid-glass-reflection::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    to right,
-    transparent,
-    rgba(255, 255, 255, 0.03) 40%,
-    rgba(255, 255, 255, 0.1) 50%,
-    rgba(255, 255, 255, 0.03) 60%,
-    transparent
-  );
-  transform: rotate(25deg);
-  animation: shimmer 12s infinite linear;
-  pointer-events: none;
-}
-
-/* Pulsing background glow blobs */
+/* Beautiful custom animations for background blobs and floating UI */
 @keyframes float-blob-1 {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(30px, -50px) scale(1.1); }
-  66% { transform: translate(-20px, 20px) scale(0.95); }
+  33% { transform: translate(60px, -80px) scale(1.2); }
+  66% { transform: translate(-40px, 40px) scale(0.85); }
 }
 
 @keyframes float-blob-2 {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(-40px, 40px) scale(1.2); }
+  50% { transform: translate(-80px, 80px) scale(1.3); }
+}
+
+@keyframes float-bob-slow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(1deg); }
+}
+
+@keyframes float-bob-medium {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(-1.5deg); }
+}
+
+@keyframes float-bob-fast {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes heart-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
 }
 
 .animate-blob-1 {
-  animation: float-blob-1 20s infinite ease-in-out;
+  animation: float-blob-1 22s infinite ease-in-out;
 }
 
 .animate-blob-2 {
-  animation: float-blob-2 25s infinite ease-in-out;
+  animation: float-blob-2 26s infinite ease-in-out;
 }
 
+.animate-float-slow {
+  animation: float-bob-slow 8s infinite ease-in-out;
+}
+
+.animate-float-medium {
+  animation: float-bob-medium 6s infinite ease-in-out;
+}
+
+.animate-float-fast {
+  animation: float-bob-fast 4s infinite ease-in-out;
+}
+
+.animate-heart-pulse {
+  animation: heart-pulse 2s infinite ease-in-out;
+}

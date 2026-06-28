@@ -21,7 +21,9 @@ import {
   Play,
   Heart,
   MessageSquare,
-  Bookmark
+  Bookmark,
+  Sun,
+  Moon
 } from "lucide-react";
 
 // Components
@@ -34,6 +36,12 @@ import ProfilePage from "./components/ProfilePage";
 import NotificationsDrawer from "./components/NotificationsDrawer";
 import SettingsPage from "./components/SettingsPage";
 import CommandPalette from "./components/CommandPalette";
+
+// Redesigned premium pages
+import LandingPage from "./components/LandingPage";
+import CommunitiesPage from "./components/CommunitiesPage";
+import MessagesPage from "./components/MessagesPage";
+import BookmarksPage from "./components/BookmarksPage";
 
 // Mock Data
 import { 
@@ -58,6 +66,25 @@ export default function App() {
   const [view, setView] = useState<"landing" | "app">("landing");
   const [activeTab, setActiveTab] = useState("feed");
   
+  const [theme, setTheme] = useState<"light" | "dark" | any>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("theme");
+      if (saved === "dark") return "dark";
+      return "light";
+    }
+    return "light";
+  });
+
+  React.useEffect(() => {
+    const root = window.document.documentElement;
+    if (theme === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+  
   // App States
   const [posts, setPosts] = useState<Post[]>(initialPosts);
   const [stories, setStories] = useState<Story[]>(initialStories);
@@ -78,6 +105,17 @@ export default function App() {
   };
 
   // State Interaction Callbacks
+  const handleEnterApp = (customProfile?: Partial<UserProfile>) => {
+    if (customProfile) {
+      setProfile((prev) => ({
+        ...prev,
+        ...customProfile
+      }));
+    }
+    setView("app");
+    addToast("Successfully linked neural spectrum to SocialSphere!", "success");
+  };
+
   const handleLike = (id: string) => {
     setPosts((prev) =>
       prev.map((post) => {
@@ -210,15 +248,12 @@ export default function App() {
   const unreadNotifications = notifications.filter((n) => !n.isRead).length;
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-[#070B14] text-white">
+    <div className="relative min-h-screen overflow-x-hidden bg-background text-text-custom transition-colors duration-300">
       {/* 3D AMBIENT AURORA BACKGROUNDS */}
       <div className="pointer-events-none fixed inset-0 -z-30 overflow-hidden">
         {/* Soft Glowing Orbs */}
-        <div className="animate-blob-1 absolute -left-1/4 -top-1/4 h-[600px] w-[600px] rounded-full bg-gradient-to-tr from-[#7C5CFF]/15 to-[#00D4FF]/10 blur-[130px] opacity-70" />
-        <div className="animate-blob-2 absolute -right-1/4 -bottom-1/4 h-[700px] w-[700px] rounded-full bg-gradient-to-tr from-[#00FFA3]/12 to-[#7C5CFF]/10 blur-[150px] opacity-60" />
-        
-        {/* Abstract glowing central horizon line */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4/5 h-[1px] bg-gradient-to-r from-transparent via-white/5 to-transparent blur-sm" />
+        <div className="animate-blob-1 absolute -left-1/4 -top-1/4 h-[550px] w-[550px] rounded-full bg-gradient-to-tr from-[#7B61FF]/10 to-[#38BDF8]/10 blur-[120px] dark:from-[#7B61FF]/20 dark:to-[#38BDF8]/15" />
+        <div className="animate-blob-2 absolute -right-1/4 -bottom-1/4 h-[650px] w-[650px] rounded-full bg-gradient-to-tr from-[#FF6EC7]/8 to-[#FF9F43]/8 blur-[140px] dark:from-[#FF6EC7]/15 dark:to-[#FF9F43]/15" />
       </div>
 
       {/* GLOBAL TOAST BANNER OVERLAYS */}
@@ -231,35 +266,52 @@ export default function App() {
               animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
               exit={{ opacity: 0, x: 50, scale: 0.95 }}
               transition={{ type: "spring", stiffness: 350, damping: 25 }}
-              className="relative overflow-hidden rounded-xl border border-white/10 bg-[#070B14]/90 p-4 shadow-2xl backdrop-blur-xl flex items-center gap-3"
+              className="relative overflow-hidden rounded-[16px] border border-border-custom bg-card/90 p-4 shadow-main backdrop-blur-xl flex items-center gap-3"
             >
-              <div className="absolute inset-0 bg-gradient-to-tr from-[#7C5CFF]/5 to-transparent pointer-events-none" />
-              <div className="h-2 w-2 rounded-full bg-[#00FFA3] animate-pulse" />
-              <p className="font-heading text-xs font-semibold text-white/90 pr-4">{toast.message}</p>
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#7B61FF]/5 to-transparent pointer-events-none" />
+              <div className="h-2.5 w-2.5 rounded-full bg-[#34D399] animate-pulse" />
+              <p className="font-heading text-xs font-semibold text-text-custom/90 pr-4">{toast.message}</p>
             </motion.div>
           ))}
         </AnimatePresence>
       </div>
 
       {/* HEADER BAR FOR QUICK NAVIGATION */}
-      <header className="sticky top-0 z-40 border-b border-white/5 bg-[#070B14]/65 backdrop-blur-md">
+      <header className="sticky top-0 z-40 border-b border-border-custom bg-card/85 backdrop-blur-md shadow-sm transition-colors duration-300">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => setView("landing")}>
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-tr from-[#7C5CFF] to-[#00D4FF] p-0.5 shadow-lg shadow-[#7C5CFF]/20">
-              <div className="flex h-full w-full items-center justify-center rounded-[7px] bg-[#070B14]">
-                <Layers className="h-4 w-4 text-[#00FFA3]" />
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-[#7B61FF] to-[#A855F7] p-0.5 shadow-lg shadow-[#7B61FF]/10">
+              <div className="flex h-full w-full items-center justify-center rounded-[10px] bg-card">
+                <Layers className="h-4.5 w-4.5 text-primary-custom" />
               </div>
             </div>
-            <span className="font-logo text-sm font-bold tracking-wider text-white">
-              SOCIAL<span className="text-[#00D4FF]">SPHERE</span>
+            <span className="font-logo text-sm font-bold tracking-wider text-text-custom">
+              SOCIAL<span className="text-primary-custom">SPHERE</span>
             </span>
           </div>
 
           <div className="flex items-center gap-4">
+            {/* Theme Toggle Button */}
+            <button
+              onClick={() => {
+                const nextTheme = theme === "light" ? "dark" : "light";
+                setTheme(nextTheme);
+                addToast(`Atmosphere switched to ${nextTheme === "light" ? "Bright Day" : "Nebula Night"}`, "info");
+              }}
+              className="flex h-10 w-10 items-center justify-center rounded-xl border border-border-custom bg-card text-text-custom hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+              title="Toggle theme atmosphere"
+            >
+              {theme === "light" ? (
+                <Moon className="h-4.5 w-4.5 text-[#7B61FF]" />
+              ) : (
+                <Sun className="h-4.5 w-4.5 text-[#FF9F43]" />
+              )}
+            </button>
+
             {view === "landing" ? (
               <button
                 onClick={() => setView("app")}
-                className="group flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#7C5CFF] to-[#00D4FF] px-4 py-2 text-xs font-heading font-bold text-white shadow-lg shadow-[#7C5CFF]/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
+                className="group flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#7B61FF] to-[#A855F7] px-4.5 py-2 text-xs font-heading font-bold text-white shadow-lg shadow-[#7B61FF]/15 hover:scale-[1.02] active:scale-[0.98] transition-all"
               >
                 <span>Launch Space</span>
                 <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
@@ -267,7 +319,7 @@ export default function App() {
             ) : (
               <button
                 onClick={() => setView("landing")}
-                className="rounded-xl border border-white/8 bg-white/4 px-4 py-2 text-xs font-heading font-bold text-[#98A2B3] hover:text-white hover:bg-white/10 transition-all"
+                className="rounded-xl border border-border-custom bg-card px-4.5 py-2 text-xs font-heading font-bold text-muted-custom hover:text-text-custom hover:bg-black/5 dark:hover:bg-white/5 transition-all"
               >
                 Product Specs
               </button>
@@ -295,205 +347,7 @@ export default function App() {
       <main className="mx-auto max-w-7xl px-6 py-8">
         <AnimatePresence mode="wait">
           {view === "landing" ? (
-            <motion.div
-              key="landing"
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.4 }}
-              className="flex flex-col gap-24"
-            >
-              {/* Giant Hero Title & Illustration */}
-              <div className="text-center relative py-12">
-                {/* 3D background floating geometric spheres */}
-                <div className="absolute -top-10 left-12 h-14 w-14 rounded-full border border-white/10 bg-white/5 shadow-2xl backdrop-blur-md animate-bounce pointer-events-none" style={{ animationDuration: "6s" }} />
-                <div className="absolute bottom-6 right-16 h-10 w-10 rounded-full border border-white/10 bg-gradient-to-tr from-[#7C5CFF]/20 to-[#00D4FF]/20 blur-[1px] shadow-2xl pointer-events-none" />
-
-                <motion.div
-                  initial={{ scale: 0.95, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-[#7C5CFF]/30 bg-[#7C5CFF]/10 px-4 py-1.5 font-space text-[11px] font-bold text-[#7C5CFF] mb-6 shadow-lg shadow-[#7C5CFF]/5"
-                >
-                  <Sparkles className="h-3.5 w-3.5" />
-                  <span>INTELLIGENT SOCIAL ENGINE V3.1</span>
-                </motion.div>
-
-                <h1 className="font-heading text-4xl sm:text-6xl font-extrabold tracking-tight text-white max-w-3xl mx-auto leading-none">
-                  Where Ideas Become <span className="bg-gradient-to-r from-[#7C5CFF] via-[#00D4FF] to-[#00FFA3] bg-clip-text text-transparent">Connections</span>
-                </h1>
-                
-                <p className="mt-6 font-sans text-sm text-[#98A2B3] max-w-xl mx-auto leading-relaxed">
-                  Experience a luxurious spatial paradigm of interaction. Blending deep physical glass aesthetics, custom ambient synthesizers, and server-side generative intelligence.
-                </p>
-
-                <div className="mt-8 flex justify-center gap-4">
-                  <button
-                    onClick={() => setView("app")}
-                    className="group flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#7C5CFF] to-[#00D4FF] hover:from-[#7C5CFF]/90 hover:to-[#00D4FF]/90 px-6 py-3 font-heading font-bold text-white shadow-xl shadow-[#7C5CFF]/25 hover:scale-[1.02] active:scale-[0.98] transition-all"
-                  >
-                    <span>Begin Exploration</span>
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                  </button>
-                  <button
-                    onClick={() => setIsCommandPaletteOpen(true)}
-                    className="flex items-center gap-2 rounded-xl border border-white/8 bg-white/4 hover:bg-white/10 px-6 py-3 font-heading font-semibold text-white transition-all"
-                  >
-                    <Terminal className="h-4.5 w-4.5 text-[#00D4FF]" />
-                    <span>Command Bar (⌘K)</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* 3D Animated Mockup Layout */}
-              <div className="relative justify-center flex">
-                <div 
-                  style={{
-                    perspective: 1200,
-                  }}
-                  className="w-full max-w-4xl"
-                >
-                  <motion.div 
-                    initial={{ rotateX: 20, rotateY: -10, scale: 0.95 }}
-                    animate={{ rotateX: 12, rotateY: -6, scale: 1 }}
-                    transition={{ type: "spring", stiffness: 80, damping: 15 }}
-                    className="rounded-[22px] border border-white/12 bg-white/5 p-4 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.8)] backdrop-blur-2xl relative overflow-hidden"
-                  >
-                    {/* Visual glowing border */}
-                    <div className="absolute inset-0 border border-white/10 rounded-[22px] pointer-events-none" />
-                    
-                    {/* Fake Web Header dots */}
-                    <div className="flex items-center gap-1.5 mb-4 px-2">
-                      <div className="h-2.5 w-2.5 rounded-full bg-[#FF5A5F]" />
-                      <div className="h-2.5 w-2.5 rounded-full bg-[#FFC857]" />
-                      <div className="h-2.5 w-2.5 rounded-full bg-[#00FFA3]" />
-                      <span className="font-mono text-[9px] text-white/30 ml-2">https://socialsphere.space/galaxy</span>
-                    </div>
-
-                    {/* Inside Mock layout */}
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 opacity-90">
-                      {/* Sidebar mock */}
-                      <div className="border border-white/6 bg-white/[0.01] rounded-xl p-3 flex flex-col gap-3">
-                        <div className="h-6 w-3/4 bg-white/10 rounded-md" />
-                        <div className="h-4 w-full bg-white/5 rounded-md" />
-                        <div className="h-4 w-5/6 bg-white/5 rounded-md" />
-                        <div className="h-4 w-4/5 bg-white/5 rounded-md" />
-                      </div>
-                      
-                      {/* Center mock feed */}
-                      <div className="md:col-span-2 flex flex-col gap-4">
-                        {/* Mock post create */}
-                        <div className="border border-white/8 bg-white/4 rounded-xl p-4 flex flex-col gap-2">
-                          <div className="flex gap-2 items-center">
-                            <div className="h-6 w-6 rounded-full bg-white/20" />
-                            <div className="h-4 w-1/3 bg-white/10 rounded-md" />
-                          </div>
-                          <div className="h-10 w-full bg-white/5 rounded-md" />
-                        </div>
-
-                        {/* Mock post card */}
-                        <div className="border border-white/8 bg-white/4 rounded-xl p-4 flex flex-col gap-3">
-                          <div className="flex gap-2 items-center">
-                            <div className="h-8 w-8 rounded-full bg-gradient-to-tr from-[#7C5CFF] to-[#00D4FF]" />
-                            <div>
-                              <div className="h-4 w-20 bg-white/10 rounded-md" />
-                              <div className="h-3 w-12 bg-white/5 rounded-md mt-1" />
-                            </div>
-                          </div>
-                          <div className="h-16 w-full bg-white/10 rounded-lg" />
-                        </div>
-                      </div>
-
-                      {/* Right utility mock */}
-                      <div className="border border-white/6 bg-white/[0.01] rounded-xl p-3 flex flex-col gap-3">
-                        <div className="h-6 w-1/2 bg-white/10 rounded-md" />
-                        <div className="h-10 w-full bg-white/5 rounded-md" />
-                        <div className="h-12 w-full bg-white/5 rounded-md" />
-                      </div>
-                    </div>
-                  </motion.div>
-                </div>
-              </div>
-
-              {/* High-Fidelity Features Grid */}
-              <div className="flex flex-col gap-6">
-                <div className="text-center">
-                  <span className="font-space text-[10px] font-bold text-[#00FFA3] uppercase tracking-widest">ARCHITECTURE</span>
-                  <h2 className="font-heading text-2xl sm:text-3xl font-extrabold text-white mt-1.5">Engineered to Inspire</h2>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {/* Feature 1 */}
-                  <div className="relative overflow-hidden rounded-[22px] border border-white/8 bg-white/4 p-6 shadow-md backdrop-blur-md">
-                    <Zap className="h-8 w-8 text-[#00D4FF] mb-4" />
-                    <h3 className="font-heading text-sm font-bold text-white mb-2">Liquid Glassmorphism</h3>
-                    <p className="font-sans text-xs text-[#98A2B3] leading-relaxed">
-                      Interface panels with simulated dynamic depth. Responsive 3D rotation transforms coordinate to mouse coordinates.
-                    </p>
-                  </div>
-
-                  {/* Feature 2 */}
-                  <div className="relative overflow-hidden rounded-[22px] border border-white/8 bg-white/4 p-6 shadow-md backdrop-blur-md">
-                    <Activity className="h-8 w-8 text-[#00FFA3] mb-4 animate-pulse" />
-                    <h3 className="font-heading text-sm font-bold text-white mb-2">Ambient Vibe Synthesis</h3>
-                    <p className="font-sans text-xs text-[#98A2B3] leading-relaxed">
-                      Continuous mood and vibe scanning powered by server-side Gemini AI models. Render emotional gradients into visual spaces.
-                    </p>
-                  </div>
-
-                  {/* Feature 3 */}
-                  <div className="relative overflow-hidden rounded-[22px] border border-white/8 bg-white/4 p-6 shadow-md backdrop-blur-md">
-                    <Sparkles className="h-8 w-8 text-[#7C5CFF] mb-4" />
-                    <h3 className="font-heading text-sm font-bold text-white mb-2">Omnipresent AI Assistant</h3>
-                    <p className="font-sans text-xs text-[#98A2B3] leading-relaxed">
-                      Need custom titles or high-vibe creative structures? Transmit topics to the Gemini engine for immediate narrative generation.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Pricing Cards (For the ultimate expensive product feel) */}
-              <div className="flex flex-col gap-6">
-                <div className="text-center">
-                  <span className="font-space text-[10px] font-bold text-[#7C5CFF] uppercase tracking-widest">TRANSMISSION FREQUENCY</span>
-                  <h2 className="font-heading text-2xl sm:text-3xl font-extrabold text-white mt-1.5">Choose Your Level</h2>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto w-full">
-                  {/* Basic */}
-                  <div className="relative overflow-hidden rounded-[22px] border border-white/8 bg-white/4 p-6 shadow-md flex flex-col justify-between">
-                    <div>
-                      <span className="font-space text-[10px] font-bold text-[#98A2B3] uppercase">Standard</span>
-                      <h3 className="font-heading text-lg font-bold text-white mt-1">Creator Core</h3>
-                      <p className="text-xs text-[#98A2B3] mt-2 mb-4">Perfect for casual narrative transmission and spatial interaction.</p>
-                      <span className="font-heading text-2xl font-bold text-white block">$0 / Month</span>
-                    </div>
-                    <button onClick={() => setView("app")} className="mt-6 w-full rounded-xl border border-white/10 bg-white/5 py-2.5 text-xs font-semibold text-white hover:bg-white/10 transition-all">
-                      Access Deck
-                    </button>
-                  </div>
-
-                  {/* Pro / Ultra */}
-                  <div className="relative overflow-hidden rounded-[22px] border border-white/12 bg-white/5 p-6 shadow-xl flex flex-col justify-between">
-                    <div className="absolute top-2 right-4 rounded-full bg-[#7C5CFF]/20 border border-[#7C5CFF]/40 px-2.5 py-0.5 font-space text-[8px] font-bold text-[#7C5CFF]">APEX STATUS</div>
-                    <div>
-                      <span className="font-space text-[10px] font-bold text-[#00D4FF] uppercase">Premium</span>
-                      <h3 className="font-heading text-lg font-bold text-white mt-1">Quantum Supernova</h3>
-                      <p className="text-xs text-[#98A2B3] mt-2 mb-4">Unlimited server-side generative AI queries and full custom badge access.</p>
-                      <span className="font-heading text-2xl font-bold text-white block">$12 / Month</span>
-                    </div>
-                    <button onClick={() => { setView("app"); addToast("Apex Premium subscription synthesized!", "success"); }} className="mt-6 w-full rounded-xl bg-gradient-to-r from-[#7C5CFF] to-[#00D4FF] py-2.5 text-xs font-bold text-white hover:scale-[1.01] transition-all shadow-md shadow-[#7C5CFF]/15">
-                      Transmit Premium
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Footer Section */}
-              <footer className="border-t border-white/5 pt-8 pb-12 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-[#98A2B3]">
-                <span>Designed by senior UI/UX Architects.</span>
-                <span>© 2026 SocialSphere space corporation.</span>
-              </footer>
-            </motion.div>
+            <LandingPage onEnterApp={handleEnterApp} currentProfile={profile} />
           ) : (
             <motion.div
               key="app"
@@ -646,6 +500,46 @@ export default function App() {
                       exit={{ opacity: 0 }}
                     >
                       <SettingsPage addToast={addToast} />
+                    </motion.div>
+                  )}
+
+                  {activeTab === "messages" && (
+                    <motion.div
+                      key="messages"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                    >
+                      <MessagesPage addToast={addToast} />
+                    </motion.div>
+                  )}
+
+                  {activeTab === "communities" && (
+                    <motion.div
+                      key="communities"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                    >
+                      <CommunitiesPage addToast={addToast} />
+                    </motion.div>
+                  )}
+
+                  {activeTab === "bookmarks" && (
+                    <motion.div
+                      key="bookmarks"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                    >
+                      <BookmarksPage
+                        posts={posts}
+                        onLike={handleLike}
+                        onVote={handleVote}
+                        onBookmark={handleBookmark}
+                        onShare={handleShare}
+                        onAddComment={handleAddComment}
+                      />
                     </motion.div>
                   )}
                 </AnimatePresence>
