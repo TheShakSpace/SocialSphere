@@ -56,3 +56,10 @@ The server starts on `http://localhost:3000`.
 - Express server
 - Gemini API (`@google/genai`)
 
+## Project Structure
+
+- `server.ts` — Express + Vite dev middleware + Gemini endpoints
+- `src/` — React UI components and pages
+- `assets/` — mock/DB and server-side code for persistence
+
+
