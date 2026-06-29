@@ -1,0 +1,5 @@
+- [x] Update README.md to a GitHub-friendly README (env var, run/build scripts)
+- [ ] Commit #1
+- [ ] Update README.md with small additional section for commit #2
+- [ ] Commit #2
+- [ ] Push to GitHub remote
